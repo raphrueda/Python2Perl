@@ -26,9 +26,31 @@ while($line = <>){
             $assignment =~ s/$var/\$$var/;
         }
 	print "\$$1 = $assignment;\n";
-    } elsif($line =~){
-
-    }else {
+    } elsif($line =~ /^\s*if\s*(.*):\s*(.*)\s*$/){
+	#one-line if statements
+	$condition = $1;
+	$body = $2;
+	foreach $var (@variables){
+            $condition =~ s/$var/\$$var/g;
+            $body =~ s/$var/\$$var/g;
+        }
+	print "if ($condition) {\n";
+	print "    $action;\n}\n";
+    } elsif($line =~ /^\s*while\s*(.*):\s*(.*)\s*$/) {
+	#one-line while loops
+        $condition = $1;
+        $body = $2;
+	foreach $var (@variables){
+            $condition =~ s/$var/\$$var/g;
+            $body =~ s/$var/\$$var/g;
+        }
+	@actions = split(/; /, $body);
+        print "while ($condition) {\n";
+	foreach $action(@actions){
+	    print "    $action;\n";
+	}
+	print "}\n";
+    } else {
 	print "#$line\n";
     }
 }

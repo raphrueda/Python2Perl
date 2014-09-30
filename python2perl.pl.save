@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+
+while($line = <>){
+    if($line =~ /^#!/ && $. == 1){
+	print "#!/usr/bin/perl -w\n";
+    } elsif($line =~ /^\s*#/ || $line =~ /^\s*$/){
+	print $line;
+} elsif ($line =~ /^\s*print\s*"(.*)"\s*$/) {	print "print \"$1\\n";\n";
+    } else {
+	print $line;
+    }
+}
