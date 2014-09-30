@@ -26,7 +26,9 @@ while($line = <>){
             $assignment =~ s/$var/\$$var/;
         }
 	print "\$$1 = $assignment;\n";
-    } else {
+    } elsif($line =~){
+
+    }else {
 	print "#$line\n";
     }
 }
