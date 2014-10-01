@@ -11,7 +11,7 @@ while($line = <>){
     } elsif($line =~ /^\s*print\s*(.*)\s*$/){
 	#print
 	$toPrint = $1;
-	$toPrint =~ s/\"//;
+	$toPrint =~ s/\"//g;
 	$newLine = "print \"$toPrint\\n\";\n";
 	foreach $var (@variables){
 	    $newLine =~ s/$var/\$$var/g;
@@ -23,26 +23,36 @@ while($line = <>){
 	push (@variables, $1);
 	$assignment = $2;
 	foreach $var (@variables){
-            $assignment =~ s/$var/\$$var/;
+	    $assignment =~ s/\b$var\b/ \$$var /g;
         }
 	print "\$$1 = $assignment;\n";
     } elsif($line =~ /^\s*if\s*(.*):\s*(.*)\s*$/){
 	#one-line if statements
 	$condition = $1;
 	$body = $2;
+	if($body =~ /{\s*$/){
+	    print "MULTILINE YO \n";
+	    exit;
+	}
 	foreach $var (@variables){
             $condition =~ s/$var/\$$var/g;
-            $body =~ s/$var/\$$var/g;
+            $body =~ s/\b$var\b/ \$$var /g;
         }
+	@actions = split(/; /, $body);
 	print "if ($condition) {\n";
-	print "    $action;\n}\n";
+	foreach $action(@actions){
+	    print "    $action;\n";
+	}
+	print "}\n";
     } elsif($line =~ /^\s*while\s*(.*):\s*(.*)\s*$/) {
 	#one-line while loops
         $condition = $1;
         $body = $2;
+	$body =~ s/break/last/g;
+	$body =~ s/continue/next/g;
 	foreach $var (@variables){
-            $condition =~ s/$var/\$$var/g;
-            $body =~ s/$var/\$$var/g;
+            $condition =~ s/ $var / \$$var /g;
+            $body =~ s/ $var / \$$var /g;
         }
 	@actions = split(/; /, $body);
         print "while ($condition) {\n";
