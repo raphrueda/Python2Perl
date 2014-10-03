@@ -1,4 +1,4 @@
 #!/usr/bin/python
 
-answer = 42
-print answer
+a = 42
+print a
