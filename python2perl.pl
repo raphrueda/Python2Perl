@@ -13,9 +13,9 @@ while($line = <>){
 	$currIndent =~ s/\t/        /g;			#replace tabs with 8 spaces
     }
     if(length($currIndent) < length($prevIndent) && $line !~ /^\s*(else|elif)/){	#BLOCK CLOSING HANDLER
-	$currLen = length($currIndent) / 4;		#produces the cleanest output with indents = 4 spaces
+	$currLen = length($currIndent) / 4;						#produces the cleanest output with indents = 4 spaces
 	$prevLen = length($prevIndent) / 4;
-	@closingBraces = ();				#cant push directly, since output is reversed
+	@closingBraces = ();								#cant push directly, since output is reversed
 	while ($currLen < $prevLen){
 	    $indent = "";
 	    for (1..$currLen){
@@ -33,6 +33,8 @@ while($line = <>){
 	push @converted, $line;
     } elsif($line =~ /^\s*print\s*(.*)\s*$/){			#PRINT HANDLER
 	$toPrint = $1;
+	$toPrint =~ s/(\"\s*),(\s*)/ $1 . $2/;
+	$toPrint =~ s/(\.\s*)([a-z])/$1\$$2/gi;
 	if($toPrint ne ""){					#not just printing a new line
     	    if($toPrint =~ /^[^\"]/ && $toPrint =~ /[^\"]$/){
 		$toPrint = changeVar($toPrint);
@@ -42,7 +44,7 @@ while($line = <>){
 	    $newLine = $currIndent . "print \"\\n\";\n";
 	}
 	push @converted, $newLine;
-    } elsif($line =~ /^\s*([a-z][a-z0-9]*)\s*=\s*(.*)\s*/){	#VARIABLE ASSIGNMENT HANDLER
+    } elsif($line =~ /^\s*([a-z][a-z0-9]*)\s*=\s*(.*)\s*/i){	#VARIABLE ASSIGNMENT HANDLER
 	$varName = $1;						#extract variable name
 	$varVal = changeVar($2);				#extract value, looking for existing variables
 	$variables{$varName} = $varVal;				#store in a hash
@@ -57,7 +59,7 @@ while($line = <>){
 	} else {
 	    $newLine = $currIndent . $blockType . " (" . $condition . ") {\n";
 	    push @converted, $newLine;
-	    if ($line =~ /:\s*.+\s*$/){				#ONE-LINE IF/WHILE HANDLER
+	    if ($line !~ /:\s*$/){				#ONE-LINE IF/WHILE HANDLER
 	        $line =~ /^\s*[^ ]*\s*.*:\s*(.*)\s*$/;		
 	        $body = $1;					
 	        @actions = split(/; /, $body);			#store actions in a hash
@@ -87,10 +89,8 @@ while($line = <>){
 	    $numericDisplacement = $2 - 1 if $1 eq "+";	
 	    $numericDisplacement = $2 + 1 if $1 eq "-";
 	    $rangeHigh =~ s/$2/$numericDisplacement/;
-	} elsif($rangeHigh =~ /([\*\/])\s*([0-9]*)\s*$/){		#if higher range is a multi.. or div..
+	} else {							#if higher range is a multi.. or div..
 	    $rangeHigh .= " - 1";
-	} else {							#if higher range is just a number
-	    $rangeHigh --;
 	}
 	if($rangeHigh =~ /^(.*)\s*[\+\-]\s*0/){
 	    $rangeHigh = $1;
@@ -158,6 +158,9 @@ foreach $line(@converted){					#CLEANUP
 	} elsif($line =~ /^\s*(break|continue)/){
 	    $newLine = $currIndent . "last;\n" if $1 eq "break";
             $newLine = $currIndent . "next;\n" if $1 eq "continue";
+            push @refinement, $newLine;
+	} elsif($line =~ /^\s*sys\.stdout\.write\((.*)\)/){
+	    $newLine = $currIndent . "print $1;\n";
             push @refinement, $newLine;
 	} else {
 	    push @refinement, $line;
