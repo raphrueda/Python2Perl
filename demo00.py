@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/bin/usr/python
 
 #Calculate bases raised to a positive power
 #Written by Raphael Rueda

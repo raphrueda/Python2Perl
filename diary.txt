@@ -1,0 +1,71 @@
+commit ec468c32cb9addab72433d8a582b1f61396b545e
+Author: Raphael <raphrueda@gmail.com>
+Date:   Sun Oct 5 15:20:41 2014 +1100
+
+    Repo cleanup, removed random testing files/examples
+
+commit a167ff21120f6e17ead9b789f776a4aa0517397b
+Author: Raphael <raphrueda@gmail.com>
+Date:   Sun Oct 5 15:13:43 2014 +1100
+
+    Added one line for loops
+
+commit 8b77c042c26a9979d757f28d52816b2d28aefb40
+Author: Raphael <raphrueda@gmail.com>
+Date:   Sun Oct 5 14:52:55 2014 +1100
+
+    Code cleanup. Added string concatenation with strings and variables to prints.
+
+commit 98c8b5f4fefa48b99f5716f243417333533c49a3
+Author: Raphael <raphrueda@gmail.com>
+Date:   Fri Oct 3 14:34:08 2014 +1000
+
+    Old py2pl.pl has been renamed to python2perl.pl with the old one being removed. Comment cleanup and general bug fixes
+
+commit 96f1134e9f10d09d3fd48cbdf31d55cb328a5ebd
+Author: Raphael <raphrueda@gmail.com>
+Date:   Thu Oct 2 20:43:32 2014 +1000
+
+    Implemented foreach loops. Added the secondary pass to translate lines from one line structures.
+
+commit 7f6a436309642f6c34cbc3ebdb9de9c5fc6fbe0d
+Author: Raphael <raphrueda@gmail.com>
+Date:   Thu Oct 2 03:22:04 2014 +1000
+
+    python2perl.pl has been deprecated, py2pl.pl is the new program. Refer to README for current status.
+
+commit 882ac23229a7fdec7610e10f89be480eeaa57db0
+Author: Raphael <raphrueda@gmail.com>
+Date:   Tue Sep 30 13:30:37 2014 +1000
+
+    Updated ReadMe
+
+commit 97755d240323bc7348723f9d246f2eb379fd22d8
+Author: Raphael <raphrueda@gmail.com>
+Date:   Tue Sep 30 13:29:59 2014 +1000
+
+    Program now passes Subset 2 examples.
+
+commit 93abcdac82bca477755502ae6bde22efe99fd3f2
+Author: Raphael <raphrueda@gmail.com>
+Date:   Tue Sep 30 13:06:43 2014 +1000
+
+    updated readme
+
+commit b42860d5032ad55dad50d8b45d29b8cee4b6dc51
+Author: Raphael <raphrueda@gmail.com>
+Date:   Tue Sep 30 03:16:55 2014 +1000
+
+    Program now passes Subset 1 examples. Program also accounts for more than 2 variables in an arithmetic print.
+
+commit 2af07d32a26f55d5e6083fae61c71c5bdb1fc8df
+Author: Raphael <raphrueda@gmail.com>
+Date:   Mon Sep 29 21:00:28 2014 +1000
+
+    Initial commit with initial program stub.
+
+commit c7130ed0565cbc7fc42880d4057907fec2def303
+Author: Raphael Rueda <raphrueda@gmail.com>
+Date:   Mon Sep 29 20:54:51 2014 +1000
+
+    Initial commit

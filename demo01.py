@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/bin/usr/python
 
 #Print a checker board of specified width and height
 #Written by Raphael Rueda

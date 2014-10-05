@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/bin/usr/python
 
 #Print the factors of a given number
 #Written by Raphael Rueda

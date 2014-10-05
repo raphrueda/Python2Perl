@@ -1,5 +1,9 @@
 #!/usr/bin/perl -w
 
+#COMP2041 Assignment 1 - Python to Perl Converter
+#Written By Raphael Rueda
+#Refer to the README provided
+
 %variables = ();
 @converted = ();
 
@@ -162,10 +166,18 @@ foreach $line(@converted){					#CLEANUP
             chomp $currIndent;
     	}
 	if($line =~ /^\s*print\s*(.*)\s*$/){			#print handler
-            $toPrint = $1;
-            if($toPrint =~ /^[^\"]?.*[^\"]?$/){$toPrint = changeVar($toPrint);}
-            $newLine = $currIndent . "print $toPrint, \"\\n\";\n";
-	    push @refinement, $newLine;
+	    $toPrint = $1;
+            $toPrint =~ s/(\"\s*),(\s*)/ $1 . $2/;
+            $toPrint =~ s/(\.\s*)([a-z])/$1\$$2/gi;
+            if($toPrint ne ""){                                     #not just printing a new line
+                if($toPrint =~ /^[^\"]/ && $toPrint =~ /[^\"]$/){
+                    $toPrint = changeVar($toPrint);
+                }
+                $newLine = $currIndent . "print $toPrint, \"\\n\";\n";
+            } else {                                                #empty print -> new line
+                $newLine = $currIndent . "print \"\\n\";\n";
+            }
+            push @refinement, $newLine;
 	} elsif($line =~ /^\s*([a-z][a-z0-9]*)\s*=\s*(.*)\s*/){	#variable assignment
             $varName = $1;
             $varVal = changeVar($2);
