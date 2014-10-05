@@ -1,5 +1,4 @@
 #!/usr/bin/python
 
-x = 5
-
-print "hello x is", x 
+x = 2
+for i in range(1,5):   x = x * i; print x

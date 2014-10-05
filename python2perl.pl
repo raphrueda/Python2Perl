@@ -60,10 +60,12 @@ while($line = <>){
 	    $newLine = $currIndent . $blockType . " (" . $condition . ") {\n";
 	    push @converted, $newLine;
 	    if ($line !~ /:\s*$/){				#ONE-LINE IF/WHILE HANDLER
-	        $line =~ /^\s*[^ ]*\s*.*:\s*(.*)\s*$/;		
+	        $line =~ /:(.*)$/;		
 	        $body = $1;					
-	        @actions = split(/; /, $body);			#store actions in a hash
+	        @actions = split(/;/, $body);			#store actions in a hash
 	        foreach $action(@actions){
+		    $action =~ s/^\s*//;
+                    $action =~ s/\s*$//;
         	    $newAction = "TODO" . $currIndent . "    " . $action . "\n";
 		    push @converted, $newAction;		#push each action with a TODO tag
                 }
@@ -78,7 +80,7 @@ while($line = <>){
 	$iterator = $1;							#extract the iterating variable
 	$variables{$iterator} = 1;					#store it in the hash
 	$range = $2;							#extract the range
-	if($range =~ /^([a-z0-9\+\-\/\*\% ]*), ([a-z0-9\+\-\/\*\% ]*)/){#two argument range handler
+	if($range =~ /^([a-z0-9\+\-\/\*\% ]*),\s*([a-z0-9\+\-\/\*\% ]*)/){#two argument range handler
 	    $rangeLow = $1;
 	    $rangeHigh = $2;
 	} elsif($range =~ /^([a-z0-9\+\-\/\*\% ]*)$/){			#one argument range handler
@@ -89,6 +91,8 @@ while($line = <>){
 	    $numericDisplacement = $2 - 1 if $1 eq "+";	
 	    $numericDisplacement = $2 + 1 if $1 eq "-";
 	    $rangeHigh =~ s/$2/$numericDisplacement/;
+	} elsif($rangeHigh =~ /^[0-9]+$/){
+	    $rangeHigh --;
 	} else {							#if higher range is a multi.. or div..
 	    $rangeHigh .= " - 1";
 	}
@@ -100,6 +104,19 @@ while($line = <>){
 	$rangeHigh = changeVar($rangeHigh);	
 	$newLine = $currIndent . "foreach \$$iterator ($rangeLow..$rangeHigh) {\n";
 	push @converted, $newLine;
+	if($line !~ /:\s*$/){							#one-line for loop
+	    $line =~ /:(.*)$/;
+	    $body = $1;
+	    @actions = split(/;/, $body);					#split the actions
+	    foreach $action(@actions){
+		$action =~ s/^\s*//;
+		$action =~ s/\s*$//;
+		$newAction = "TODO" . $currIndent . "    " . $action . "\n";	#push each for later translation
+                push @converted, $newAction;
+	    }
+	    $closeBlock = $currIndent . "}\n";              			#close the block
+            push @converted, $closeBlock;
+	}
     } elsif($line =~ /^\s*sys\.stdout\.write\((.*)\)/){			#STDOUT HANDLER
 	$newLine = $currIndent . "print $1;\n";
 	push @converted, $newLine;
