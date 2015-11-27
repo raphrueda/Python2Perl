@@ -2,6 +2,9 @@ comp2041ass1
 ============
 
 COMP2041 Assignment 1
+
+Python to Perl Converter
+
  - Completed + Notes:
 	- Subset 0
 	    + Printing (strings, variables, combination of both)
